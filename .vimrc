@@ -142,10 +142,13 @@ Plugin 'taghighlight'
 "Plugin 'Valloric/YouCompleteMe'
 Plugin 'grep.vim'
 Plugin 'kien/ctrlp.vim'
-Plugin 'tomasr/molokai'
+"Plugin 'tomasr/molokai'
 Plugin 'majutsushi/tagbar'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'luochen1990/rainbow'
+Plugin 'jiangmiao/auto-pairs'
 
 call vundle#end()
 filetype plugin indent on
@@ -185,6 +188,7 @@ let g:ycm_seed_identifiers_with_syntax=1			" 语法关键字补全
 let g:ycm_autoclose_preview_window_after_completion=1		" 补全之后关闭preview
 
 let g:ycm_key_invoke_completion='<S-Space>'			" 自动补全快捷键
+let g:ycm_disable_for_files_larger_than_kb=50*1024
 
 let g:ycm_complete_in_strings=1						" 允许在字符串里补全（双引号）
 
@@ -206,20 +210,70 @@ let g:ycm_warning_symbol = '>*'
 
 "air_line配置
 set laststatus=2
-let g:airline_theme='molokai'
-"let g:airline_powerline_fonts = 1
+let g:airline_theme='dark'
+let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled = 1
-"let g:airline_left_sep = ''
-"let g:airline_left_alt_sep = ''
-"let g:airline_right_sep = ''
-"let g:airline_right_alt_sep = ''
-"
-"
-"" 映射切换buffer的键位
-nnoremap [b :bp<CR>
-nnoremap ]b :bn<CR>
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#tabline#show_tab_nr = 1
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline#extensions#ycm#enabled = 1
+let g:airline#extensions#tagbar#enabled = 1
 
-colorscheme molokai             " 配色方案
+"let g:airline#extensions#whitespace#enabled = 1
+
+let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_start_level=1
+let g:indent_guides_guide_size=1
+let g:indent_guides_tab_guides=1
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=234
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
+
+let g:rainbow_active=1
+let g:rainbow_conf={
+\   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+\   'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+\   'guis': [''],
+\   'cterms': [''],
+\   'operators': '_,_',
+\   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\   'separately': {
+\       '*': {},
+\       'markdown': {
+\           'parentheses_options': 'containedin=markdownCode contained', 
+\       },
+\       'vim': {
+\           'parentheses_options': 'containedin=vimFuncBody', 
+\       },
+\   }
+\}
+
+let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"'}
+let g:AutoPairs['<']='>'
+let g:AutoPairsMapBS = 1
+let g:AutoPairsMapCR = 1
+
+au BufReadPost * if line("'\"") > 0 | if line("'\"") <= line("$") | exe("norm '\"") | else |exe "norm $"| endif | endif
+
+"" 映射切换buffer的键位
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+nmap <leader>- <Plug>AirlineSelectPrevTab
+nmap <leader>+ <Plug>AirlineSelectNextTab
+
+"colorscheme molokai             " 配色方案
 hi Comment              ctermfg=DarkGreen
 hi PreProc              ctermfg=Blue           
 hi Type                 ctermfg=Yellow   
@@ -247,3 +301,6 @@ hi Variable             ctermfg=229
 hi CTagsStructure       ctermfg=Yellow
 hi CTagsEnumerationName     ctermfg=135
 hi CTagsEnumerationValue    ctermfg=135
+hi Search               ctermfg=Yellow ctermbg=242
+hi SpellBad             term=underline cterm=underline ctermfg=1 ctermbg=234
+hi Visual               ctermbg=Grey
